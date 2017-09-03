@@ -2,47 +2,119 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- 
-mapper接口代理实现编写规则:
-	1. 映射文件中namespace要等于接口的全路径名称
-	2. 映射文件中sql语句id要等于接口的方法名称
-	3. 映射文件中传入参数类型要等于接口方法的传入参数类型
-	4. 映射文件中返回结果集类型要等于接口方法的返回值类型
- -->
+<!-- mapper接口代理实现编写规则: 1. 映射文件中namespace要等于接口的全路径名称 2. 映射文件中sql语句id要等于接口的方法名称 
+	3. 映射文件中传入参数类型要等于接口方法的传入参数类型 4. 映射文件中返回结果集类型要等于接口方法的返回值类型 -->
 <mapper namespace="cn.ithup.mapper.UserMapper">
 
-	<!-- 
-	id:sql语句唯一标识
-	parameterType:指定传入参数类型
-	resultType:返回结果集类型
-	#{}占位符:起到占位作用,如果传入的是基本类型(string,long,double,int,boolean,float等),那么#{}中的变量名称可以随意写.
-	 -->
+	<!-- id:sql语句唯一标识 parameterType:指定传入参数类型 resultType:返回结果集类型 #{}占位符:起到占位作用,如果传入的是基本类型(string,long,double,int,boolean,float等),那么#{}中的变量名称可以随意写. -->
 	<select id="findUserById" parameterType="int" resultType="user">
-		select * from user where id=#{id}
+		select
+		* from user where id=#{id}
 	</select>
-	
-	<!-- 
-	如果返回结果为集合,可以调用selectList方法,这个方法返回的结果就是一个集合,所以映射文件中应该配置成集合泛型的类型
-	${}拼接符:字符串原样拼接,如果传入的参数是基本类型(string,long,double,int,boolean,float等),那么${}中的变量名称必须是value
-	注意:拼接符有sql注入的风险,所以慎重使用
-	 -->
-	<select id="findUserByUserName" parameterType="string" resultType="user">
+
+	<!-- 如果返回结果为集合,可以调用selectList方法,这个方法返回的结果就是一个集合,所以映射文件中应该配置成集合泛型的类型 ${}拼接符:字符串原样拼接,如果传入的参数是基本类型(string,long,double,int,boolean,float等),那么${}中的变量名称必须是value 
+		注意:拼接符有sql注入的风险,所以慎重使用 -->
+	<select id="findUserByUserName" parameterType="string"
+		resultType="user">
 		select * from user where username like '%${value}%'
 	</select>
-	
-	<!-- 
-	#{}:如果传入的是pojo类型,那么#{}中的变量名称必须是pojo中对应的属性.属性.属性.....
-	如果要返回数据库自增主键:可以使用select LAST_INSERT_ID()
-	 -->
-	<insert id="insertUser" parameterType="user" >
-		<!-- 执行 select LAST_INSERT_ID()数据库函数,返回自增的主键
-		keyProperty:将返回的主键放入传入参数的Id中保存.
-		order:当前函数相对于insert语句的执行顺序,在insert前执行是before,在insert后执行是AFTER
-		resultType:id的类型,也就是keyproperties中属性的类型
-		-->
+
+	<!-- #{}:如果传入的是pojo类型,那么#{}中的变量名称必须是pojo中对应的属性.属性.属性..... 如果要返回数据库自增主键:可以使用select 
+		LAST_INSERT_ID() -->
+	<insert id="insertUser" parameterType="user">
+		<!-- 执行 select LAST_INSERT_ID()数据库函数,返回自增的主键 keyProperty:将返回的主键放入传入参数的Id中保存. 
+			order:当前函数相对于insert语句的执行顺序,在insert前执行是before,在insert后执行是AFTER resultType:id的类型,也就是keyproperties中属性的类型 -->
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-			select LAST_INSERT_ID()
+			select
+			LAST_INSERT_ID()
 		</selectKey>
-		insert into user (username,birthday,sex,address) values(#{username},#{birthday},#{sex},#{address})
+		insert into user (username,birthday,sex,address)
+		values(#{username},#{birthday},#{sex},#{address})
 	</insert>
+
+	<!-- 根据用户名查询用户信息，查询条件放到QueryVo的user属性中 -->
+	<select id="findUserByUserQueryVo" parameterType="QueryVo"
+		resultType="User">
+		select * from user where username like '%${user.username}%'
+		and sex = #{user.sex}
+	</select>
+
+	<!-- 只有返回结果为一行一列的时候,那么返回值类型才可以指定成基本类型 -->
+	<select id="findUserCount" resultType="int">
+		SELECT COUNT(id) FROM user
+	</select>
+
+	<!-- 调用sql条件 -->
+	<select id="findUserByUserNameAndSex" parameterType="user"
+		resultType="user">
+		select * from user
+		<!-- where username like '%${username}%' and sex = #{sex} -->
+		<include refid="UserMapperVo.user_where" />
+	</select>
+
+	<!-- 批量查询 -->
+	<select id="findUserByIds" parameterType="QueryVo" resultType="User">
+		select * from user
+		<include refid="UserMapperVo.user_in"></include>
+	</select>
+
+	<!-- 批量删除 -->
+	<delete id="deleteUserByIds" parameterType="QueryVo">
+		DELETE FROM USER where id in
+		<foreach item="id" collection="ids" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!-- 一对一:自动映射 -->
+	<select id="findOrdersAndUser" resultType="CustomOrders">
+		select a.*, b.id uid,
+		username, birthday, sex, address
+		from orders a, user b
+		where a.user_id = b.id
+	</select>
+
+	<!-- 
+	id:resultMap的唯一标识
+	type:将查询出的数据放入这个指定的对象中
+	注意:手动映射需要指定数据库中表的字段名与java中pojo类的属性名称的对应关系
+	 -->
+	 <resultMap type="cn.itheima.pojo.Orders" id="orderAndUserResultMap">
+		<!-- id标签指定主键字段对应关系
+		column:列,数据库中的字段名称
+		property:属性,java中pojo中的属性名称
+		 -->
+		<id column="id" property="id"/>
+		
+		<!-- result:标签指定非主键字段的对应关系 -->
+		<result column="user_id" property="userId"/>
+		<result column="number" property="number"/>
+		<result column="createtime" property="createtime"/>
+		<result column="note" property="note"/>
+		
+		<!-- 这个标签指定单个对象的对应关系 
+		property:指定将数据放入Orders中的user属性中
+		javaType:user属性的类型
+		-->
+		<association property="user" javaType="cn.itheima.pojo.User">
+			<id column="id" property="id"/>
+			<result column="username" property="username"/>
+			<result column="birthday" property="birthday"/>
+			<result column="sex" property="sex"/>
+			<result column="address" property="address"/>
+		</association>
+	</resultMap>
+	<select id="findOrdersAndUser2" resultMap="orderAndUserResultMap">
+		select a.*, b.id uid, username, birthday, sex, address 
+		from orders a, user b 
+		where a.user_id = b.id
+	</select>
+
+
+
+
+
+
+
 </mapper>
