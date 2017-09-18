@@ -2,15 +2,12 @@ package cn.ithup.mapper;
 
 import java.util.List;
 
-import cn.ithup.pojo.CustomOrders;
-import cn.ithup.pojo.Orders;
-import cn.ithup.pojo.QueryVo;
 import cn.ithup.pojo.User;
 
 public interface UserMapper {
 
 	/**
-	 * ¸ù¾İid²éÑ¯Ò»ÌõÓÃ»§ĞÅÏ¢
+	 * ï¿½ï¿½ï¿½idï¿½ï¿½Ñ¯Ò»ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 	 * 
 	 * @param id
 	 * @return
@@ -18,7 +15,7 @@ public interface UserMapper {
 	public User findUserById(Integer id);
 
 	/**
-	 * ¸ù¾İÓÃ»§Ãû³ÆÄ£ºı²éÑ¯ÓÃ»§ĞÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ñ¯ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 	 * 
 	 * @param userName
 	 * @return
@@ -26,53 +23,10 @@ public interface UserMapper {
 	public List<User> findUserByUserName(String userName);
 
 	/**
-	 * Ìí¼ÓÒ»ÌõÓÃ»§ĞÅÏ¢
+	 * ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 	 * 
 	 * @param user
 	 */
 	public void insertUser(User user);
 
-	/**
-	 * ¸ù¾İÓÃ»§Ãû²éÑ¯ÓÃ»§ĞÅÏ¢£¬²éÑ¯Ìõ¼ş·Åµ½QueryVoµÄuserÊôĞÔÖĞ
-	 * 
-	 * @param queryVo
-	 * @return
-	 */
-	public List<User> findUserByUserQueryVo(QueryVo queryVo);
-
-	/**
-	 * ²éÑ¯ÓÃ»§ÊıÁ¿
-	 * 
-	 * @return
-	 */
-	public int findUserCount();
-
-	/**
-	 * ¸ù¾İÓÃ»§Ãû³ÆºÍĞÔ±ğ²éÑ¯ÓÃ»§ĞÅÏ¢
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public List<User> findUserByUserNameAndSex(User user);
-
-	/**
-	 * ÅúÁ¿²éÑ¯
-	 * 
-	 * @param queryVo
-	 * @return
-	 */
-	public List<User> findUserByIds(QueryVo queryVo);
-
-	/**
-	 * ÅúÁ¿É¾³ı
-	 * 
-	 * @param queryVo
-	 */
-	public void deleteUserByIds(QueryVo queryVo);
-
-	public List<CustomOrders> findOrdersAndUser();
-
-	public List<Orders> findOrdersAndUser2();
-
-	public List<User> findUserAndOrders();
 }

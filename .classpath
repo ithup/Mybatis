@@ -15,5 +15,25 @@
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.7-bin.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.5.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/aspectjweaver-1.6.11.jar"/>
+	<classpathentry kind="lib" path="lib/commons-dbcp-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-pool-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/jstl-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.9.jar"/>
+	<classpathentry kind="lib" path="lib/mybatis-spring-1.2.2.jar" sourcepath="D:/javaEE学习资料/【阶段12】Mybatis/mybatis-day01/资料/jar包/mybatis-spring-1.2.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/spring-aop-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-aspects-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-beans-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-context-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-context-support-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-core-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-expression-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-jdbc-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-jms-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-messaging-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-tx-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-web-4.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-webmvc-4.1.3.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

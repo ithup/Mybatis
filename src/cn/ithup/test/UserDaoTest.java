@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cn.ithup.dao.UserDao;
 import cn.ithup.dao.UserDaoImpl;
@@ -16,33 +18,25 @@ import cn.ithup.pojo.User;
 
 public class UserDaoTest {
 
-	private SqlSessionFactory factory;
+	private ApplicationContext ac;
 	
 	//作用:在测试方法前执行这个方法
 	@Before
 	public void setUp() throws Exception{
-		String resource = "SqlMapConfig.xml";
-		//通过流将核心配置文件读取进来
-		InputStream inputStream = Resources.getResourceAsStream(resource);
-		//通过核心配置文件输入流来创建会话工厂
-		factory = new SqlSessionFactoryBuilder().build(inputStream);
+		ac = new ClassPathXmlApplicationContext("ApplicationContext.xml");
 	}
 	
 	@Test
 	public void testFindUserById() throws Exception{
-		//将初始化好的工厂注入到实现类中
-		UserDao userDao = new UserDaoImpl(factory);
-		
+		UserDao userDao = ac.getBean(UserDao.class);
 		User user = userDao.findUserById(1);
 		System.out.println(user);
 	}
 	
 	@Test
 	public void testFindUserByUserName () throws Exception{
-		
-		UserDao userDao = new UserDaoImpl(factory);
-		
-		List<User> list = userDao.findUserByUserName("王");
+		UserDao userDao = ac.getBean(UserDao.class);
+		List<User> list = userDao.findUserByUserName("小");
 		System.out.println(list);
 	}
 }
